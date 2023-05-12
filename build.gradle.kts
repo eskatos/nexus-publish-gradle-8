@@ -47,14 +47,9 @@ val javadocJar by tasks.registering(Jar::class) {
 }
 
 nexusPublishing {
-    // This compiles, but at least in my IDE shows an error:
-    repositories {
+    this.repositories {
         sonatype()
     }
-    // This fixes the issue above:
-    // repositories(action = {
-    //     sonatype()
-    // })
 }
 
 publishing {

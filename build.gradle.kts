@@ -1,7 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.8.20"
+    kotlin("multiplatform") version "1.8.21"
     id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
-    id("org.jetbrains.dokka") version "1.8.10"
     `maven-publish`
     signing
 }
@@ -39,10 +38,7 @@ kotlin {
     }
 }
 
-// Create Javadoc from Dokka's output
 val javadocJar by tasks.registering(Jar::class) {
-    from(tasks.dokkaHtml)
-    dependsOn(tasks.dokkaHtml)
     archiveClassifier.set("javadoc")
 }
 
@@ -53,13 +49,12 @@ nexusPublishing {
 }
 
 publishing {
-    publications.withType<MavenPublication>().configureEach {
-        afterEvaluate {
-            artifact(javadocJar)
+    publications.withType<MavenPublication> {
+        // Use stub javadoc
+        artifact(javadocJar)
 
-            pom {
-                name.set(project.name)
-            }
+        pom {
+            name.set(project.name)
         }
     }
 }
